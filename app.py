@@ -134,9 +134,11 @@ with tab2:
     with st.expander("Notebooks"):
         nb_desc = read_markdown_file("docs/notebooks_desc.md")
         st.markdown(nb_desc, unsafe_allow_html=True)
-    with st.expander("Content Based Filtering"):
-        print("Content Based Filtering")
-        # readme = read_markdown_file("docs/content_based.md")
-        # st.markdown(readme, unsafe_allow_html=True)
+    with st.expander("Model selection"):
+        model_sel = read_markdown_file("docs/model_selection.md")
+        st.markdown(model_sel, unsafe_allow_html=True)
+    with st.expander("Results and Conclusion"):
+        eval_conc = read_markdown_file("docs/result.md")
+        st.markdown(eval_conc, unsafe_allow_html=True)
 
 
