@@ -1,11 +1,15 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from colab_filter import create_X, find_similar_movies
+
 from PIL import Image
 from io import BytesIO
 import requests
 from tmdb_api import fetch_poster
+
+from filters.colab_filter import create_X, find_similar_movies
+from filters.content_based import ContentBasedRecommender
+
 st.set_page_config(layout="wide")
 st.title('Movie Recommender System')
 st.subheader('Welcome to the Movie Recommender System built by Shreemit')
