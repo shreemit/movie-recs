@@ -7,19 +7,20 @@ from io import BytesIO
 import requests
 from tmdb_api import fetch_poster
 
-from filters.colab_filter import create_X, find_similar_movies
+from filters.colab_filter import create_X, recommend_movies_for_user, find_recommended_movies
 from filters.content_based import ContentBasedRecommender
 
 st.set_page_config(layout="wide")
 st.title('Movie Recommender System')
 st.subheader('Welcome to the Movie Recommender System built by Shreemit')
-
+ 
 # check if userid is numeric or else return error
 user_id = st.text_input('Enter User ID here:')
-if user_id.isnumeric():
+if user_id.isnumeric() and int(user_id) > 0:
     user_id = int(user_id)
 else:
     st.write('Please enter a valid User ID')
+    st.stop()
 print(user_id)
 
 # Load the data
@@ -37,17 +38,17 @@ X, user_mapper, movie_mapper, user_inv_mapper, movie_inv_mapper = create_X(ratin
 user_top3 = user_ratings.head(3)
 st.write(user_top3)
 
-movie_to_rec = set()
-# get top 5 similar movies for top 3 movies
-for movie in user_top3['movieId']:
-    # st.write(f"Top 5 movies similar to {movies[movies['movieId'] == movie]['title'].values[0]}")
-    similar_movies = find_similar_movies(movie, movie_mapper, movie_inv_mapper, X, k=5)
-    movie_to_rec.update(similar_movies[0:2])
 
+    # st.write(f"Top 5 movies similar to {movies[movies['movieId'] == movie]['title'].values[0]}")
+movies_to_rec = recommend_movies(user_id=user_id,
+                                        user_mapper=user_mapper,
+                                        user_inv_mapper=user_inv_mapper,
+                                        X=X,
+                                        k=5)
 
 # display the recommended movies
 st.write(f"Recommended movies for user {user_id}")
-top5_movies_df = movies[movies['movieId'].isin(movie_to_rec)][0:5]
+top5_movies_df = movies[movies['movieId'].isin(movies_to_rec)][0:5]
 
 titles = []
 posters = []
@@ -61,7 +62,6 @@ st.write(top5_movies_df)
 
 placeholder_image = Image.open('placeholder2.png')
 cols = [col for col in st.columns(len(titles))]
-st.write(len(cols), len(titles))
 for i in range(0, len(titles)):
     # print("Index", idx, row)
     with cols[i]:
@@ -75,6 +75,6 @@ for i in range(0, len(titles)):
         st.write("________")
         
         st.write(
-            f'<b style="color:#DB4437">Rating</b>:<b> {genres[i]}</b>',
+            f'<b style="color:#DB4437">Genres</b>:<b> {genres[i]}</b>',
             unsafe_allow_html=True,
         )

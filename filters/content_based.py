@@ -1,6 +1,6 @@
 import numpy as np
 from fuzzywuzzy import process
-from sklearm.metrics.pairwise import cosine_similarity
+from sklearn.metrics.pairwise import cosine_similarity
 
 class ContentBasedRecommender:
     def __init__(self, movies_df, movie_features):
