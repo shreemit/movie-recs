@@ -48,16 +48,16 @@ movie_features = pd.read_pickle('movie_features.pkl')
 content_based_recommender = ContentBasedRecommender(movies, movie_features)
 user_top3 = ratings[ratings['userId'] == user_id].sort_values('rating', ascending=False).head(3)
 for movie in user_top3['movieId'].values:
-    content_based_movies = content_based_recommender.get_content_based_recommendations(movie_id=movie, 
-                                                                                       n_recommendations=3)
+    # content_based_movies = content_based_recommender.get_content_based_recommendations(movie_id=movie, 
+    #                                                                                    n_recommendations=3)
     colab_filter_movies = find_similar_movies(movie_id=movie,
                                                 movie_mapper=movie_mapper,
                                                 movie_inv_mapper=movie_inv_mapper,
                                                 X=X,
-                                                k=3)
+                                                k=5)
     
-    for movie in content_based_movies:
-        movies_to_rec.add(movie)
+    # for movie in content_based_movies:
+    #     movies_to_rec.add(movie)
     for movie in colab_filter_movies:
         movies_to_rec.add(movie)
 
@@ -71,6 +71,8 @@ movies_to_rec = list(movies_to_rec - set(user_ratings['movieId'].values))
 # display the recommended movies
 st.write(f"Recommended movies for user {user_id}")
 top5_movies_df = movies[movies['movieId'].isin(movies_to_rec)][0:5]
+# random
+top5_movies_df = top5_movies_df.sample(frac=1)
 
 titles = []
 posters = []
