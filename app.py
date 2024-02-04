@@ -7,7 +7,7 @@ from io import BytesIO
 import requests
 from tmdb_api import fetch_poster
 
-from filters.colab_filter import create_X, recommend_movies_for_user, find_recommended_movies
+from filters.colab_filter import create_X, find_similar_movies
 from filters.content_based import ContentBasedRecommender
 
 st.set_page_config(layout="wide")
@@ -27,24 +27,46 @@ print(user_id)
 ratings = pd.read_csv('ratings.csv')
 movies = pd.read_csv('merge_movies.csv')
 
+
 # get top-rated movies watched by user
 user_ratings = ratings[ratings['userId'] == user_id]
 user_ratings = user_ratings.sort_values('rating', ascending=False)
-user_ratings = user_ratings.merge(movies[['movieId', 'title', 'year']], on='movieId')
+user_ratings = user_ratings.merge(movies[['movieId', 'title', 'year', 'genres']], on='movieId')
+user_top3 = user_ratings.head(3)
+st.write(user_top3)
 
 X, user_mapper, movie_mapper, user_inv_mapper, movie_inv_mapper = create_X(ratings)
 
 # get user top 3 movies
-user_top3 = user_ratings.head(3)
-st.write(user_top3)
 
 
+
+movies_to_rec = set()
     # st.write(f"Top 5 movies similar to {movies[movies['movieId'] == movie]['title'].values[0]}")
-movies_to_rec = recommend_movies(user_id=user_id,
-                                        user_mapper=user_mapper,
-                                        user_inv_mapper=user_inv_mapper,
-                                        X=X,
-                                        k=5)
+    
+movie_features = pd.read_pickle('movie_features.pkl')
+content_based_recommender = ContentBasedRecommender(movies, movie_features)
+user_top3 = ratings[ratings['userId'] == user_id].sort_values('rating', ascending=False).head(3)
+for movie in user_top3['movieId'].values:
+    content_based_movies = content_based_recommender.get_content_based_recommendations(movie_id=movie, 
+                                                                                       n_recommendations=3)
+    colab_filter_movies = find_similar_movies(movie_id=movie,
+                                                movie_mapper=movie_mapper,
+                                                movie_inv_mapper=movie_inv_mapper,
+                                                X=X,
+                                                k=3)
+    
+    for movie in content_based_movies:
+        movies_to_rec.add(movie)
+    for movie in colab_filter_movies:
+        movies_to_rec.add(movie)
+
+for movie in colab_filter_movies:
+    movies_to_rec.add(movie)
+
+# remove the movies that the user has already seen
+movies_to_rec = list(movies_to_rec - set(user_ratings['movieId'].values))
+
 
 # display the recommended movies
 st.write(f"Recommended movies for user {user_id}")
@@ -55,7 +77,7 @@ posters = []
 genres = []
 for idx, row in top5_movies_df.iterrows():
     titles.append(row['title'])
-    posters.append(fetch_poster(row['movieId']))
+    posters.append(fetch_poster(row['tmdbId']))
     genres.append(row['genres'])
 
 st.write(top5_movies_df)

@@ -9,7 +9,7 @@ from scipy.sparse import csr_matrix
 from sklearn.neighbors import NearestNeighbors
 
 # Load the data
-movies = pd.read_csv('merge_movies.csv')
+movies = pd.read_csv('movies.csv')
 ratings = pd.read_csv('ratings.csv')    
 
 # Merge the data
@@ -96,12 +96,12 @@ def find_recommended_movies(user_id, user_mapper, movie_inv_mapper, X, k, metric
     recommended_ids = []
     
     user_ind = user_mapper[user_id]
-    user_vec = X[:, user_ind]
     # Find the movies that the user has rated 4 or higher
-    high_rated_movies = np.where(user_vec >= 4)[0]
+    high_rated_movies = ratings[ratings['userId'] == user_id].sort_values(by='rating', ascending=False).head(10)['movieId'].to_list()
+    print(high_rated_movies)
     # For each high rated movie, find similar movies using kNN
     for movie_ind in high_rated_movies:
-        movie_id = movie_inv_mapper[movie_ind]
+        # movie_id = movie_inv_mapper[movie_ind]
         movie_vec = X[movie_ind]
         kNN = NearestNeighbors(n_neighbors=k+1, algorithm="brute", metric=metric)
         kNN.fit(X)
@@ -116,7 +116,7 @@ def find_recommended_movies(user_id, user_mapper, movie_inv_mapper, X, k, metric
     # Return the first k movies
     return recommended_ids[:k]
 
-def recommend_movies_for_user(user_id, user_mapper,, movie_inv_mapper, X, k, metric='cosine'):
+def recommend_movies_for_user(user_id, user_mapper, movie_inv_mapper, X, k, metric='cosine'):
     """
     Recommends k movies for a given user_id.
 

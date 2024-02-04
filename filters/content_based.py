@@ -6,22 +6,18 @@ class ContentBasedRecommender:
     def __init__(self, movies_df, movie_features):
         self.movies_df = movies_df
         self.cosine_sim = cosine_similarity(movie_features, movie_features)
-        self.movie_idx = dict(zip(self.movies_dfes['title'], list(self.movies_df.index)))
+        self.movie_idx_mapper = dict(zip(movies_df['movieId'], list(movies_df.index)))
+    
 
-    def movie_finder(self, title):
-        all_titles = self.movies_df['title'].tolist()
-        closest_match = process.extractOne(title, all_titles)
-        return closest_match[0]
 
-    def get_content_based_recommendations(self, title_string, n_recommendations):
-        title = self.movie_finder(title_string)
-        idx = self.movie_idx[title]
+    def get_content_based_recommendations(self, movie_id, n_recommendations):
+        idx = self.movie_idx_mapper[movie_id]
         sim_scores = list(enumerate(self.cosine_sim[idx]))
         sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
         sim_scores = sim_scores[1:(n_recommendations+1)]
         similar_movies = [i[0] for i in sim_scores]
-        print(f"Recommendations for {title}:")
-        print(self.movies_df['title'].iloc[similar_movies])
+        # print(f"Recommendations for {title}:")
+        return similar_movies
 
     
 
