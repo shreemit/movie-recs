@@ -16,7 +16,9 @@ We used three metrics to evaluate the quality of these recommendations: precisio
 The table shows that the collaborative filtering method was more successful at recommending movies that users liked, as indicated by its higher precision, recall, and accuracy scores.
 
 ## Conclusion and Future Work with Insights:
-Our evaluation confirms that collaborative filtering outperforms content-based filtering in recommending movies users enjoy, achieving higher precision, recall, and accuracy. This suggests that user-to-user preference patterns hold stronger predictive power than simply analyzing movie attributes.
+Our evaluation confirms that collaborative filtering outperforms content-based filtering in recommending movies users enjoy, achieving higher precision, recall, and accuracy. 
+
+While both the collaborative filtering and content-based filtering methods have their strengths, neither method has shown exceptional performance in our tests. There is significant room for improvement in both accuracy and personalization of the recommendations. This highlights the need for exploring more advanced techniques, such as transformer models and hybrid models, to enhance the effectiveness of our movie recommendation system.
 
 ### Looking Ahead:
 
@@ -40,3 +42,9 @@ While this is a promising result, here are exciting avenues for exploration:
 
 
 ##### These improvements could be implemented to potentially improve the recommendation system's accuracy and personalization capabilities.
+
+### References:
+1. [MovieLens Dataset](https://grouplens.org/datasets/movielens/)
+2. [GitHub Tutorial]('https://github.com/topspinj')
+3. [Streamlit App]('https://github.com/vikramr22/moviesway-v2')
+4. [ChatGPT]
