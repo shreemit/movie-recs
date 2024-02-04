@@ -24,8 +24,9 @@ This repository contains the code for a movie recommender system. The system use
 
 1. Clone this repository to your local machine.
 2. Install the required Python packages using pip: `pip install -r requirements.txt`
-3. Run the `app.py` script: `python app.py`
+3. Run the streamlit `app.py` script: `streamlit run app.py`
 4. Open your web browser and navigate to `http://localhost:8501` to use the recommender system.
+5. You can also access the web app [here](https://movierecs.streamlit.app/)
 
 ## License
 
