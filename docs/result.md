@@ -47,4 +47,4 @@ While this is a promising result, here are exciting avenues for exploration:
 1. [MovieLens Dataset](https://grouplens.org/datasets/movielens/)
 2. [GitHub Tutorial]('https://github.com/topspinj')
 3. [Streamlit App]('https://github.com/vikramr22/moviesway-v2')
-4. [ChatGPT]
+4. ChatGPT, Bard
