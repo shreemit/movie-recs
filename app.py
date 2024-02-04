@@ -126,7 +126,7 @@ with tab2:
         return Path(markdown_file).read_text()
 
     with st.expander("Introduction"):
-        readme = read_markdown_file("READMe.md")
+        readme = read_markdown_file("README.md")
         st.markdown(readme, unsafe_allow_html=True)
     with st.expander("Train Test Split"):
         train_test = read_markdown_file("docs/train_test_split.md")
