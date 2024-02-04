@@ -1,5 +1,4 @@
 import numpy as np
-from fuzzywuzzy import process
 from sklearn.metrics.pairwise import cosine_similarity
 
 class ContentBasedRecommender:
@@ -8,8 +7,6 @@ class ContentBasedRecommender:
         self.cosine_sim = cosine_similarity(movie_features, movie_features)
         self.movie_idx_mapper = dict(zip(movies_df['movieId'], list(movies_df.index)))
     
-
-
     def get_content_based_recommendations(self, movie_id, n_recommendations):
         idx = self.movie_idx_mapper[movie_id]
         sim_scores = list(enumerate(self.cosine_sim[idx]))
