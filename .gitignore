@@ -162,4 +162,8 @@ cython_debug/
 /ml-25m
 *.zip
 *.npy
-msrd-master/
+*.csv
+*.csv.gz
+msrd/
+data_files/
+trained_models/
