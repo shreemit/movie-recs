@@ -9,6 +9,7 @@ from tmdb_api import fetch_poster
 from pathlib import Path
 
 from filters.recommender import Recommender
+from semantic_search import MovieSearch
 
 st.set_page_config(layout="wide")
 st.title('Movie Recommender System')
@@ -55,8 +56,8 @@ with tab1:
         print(user_id)
 
         # Load the data
-        ratings = pd.read_csv('ratings.csv')
-        movies = pd.read_csv('merge_movies.csv')
+        ratings = pd.read_csv('data/ratings.csv')
+        movies = pd.read_csv('data/merge_movies.csv')
         movies['genres'] = movies['genres'].apply(lambda x: x.split("|"))
 
         # get top-rated movies watched by user
@@ -75,9 +76,9 @@ with tab1:
                     ("Content based filtering", "Collaborative filtering"))
 
     # get top-rated movies watched by user
-    recommender = Recommender(ratings_path='train_data.csv', 
-                            movies_path='movies.csv', 
-                            movie_features_path='movie_features.pkl')
+    recommender = Recommender(ratings_path='data/train_data.csv', 
+                            movies_path='data/movies.csv', 
+                            movie_features_path='data/movie_features.pkl')
 
 
     # get the recommendations
